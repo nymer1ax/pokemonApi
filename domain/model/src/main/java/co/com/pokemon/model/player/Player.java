@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@EqualsAndHashCode
+@EqualsAndHashCode(of = {"name"})
 public class Player {
     private String name;
     private List<PokemonCard> selectedCards;

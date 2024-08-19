@@ -28,9 +28,9 @@ public class BattleUseCase {
     private static final String BATTLE_LOST_LOG = "%s ha perdido la batalla!";
 
     public BattleStatus executeTurn(Battle battle, Player currentPlayer, PlayerAction playerActionInput) {
-        Player opponent = (currentPlayer == battle.getPlayer1()) ? battle.getPlayer2() : battle.getPlayer1();
-        PokemonCard currentPokemon = (currentPlayer == battle.getPlayer1()) ? battle.getActivePokemonPlayer1() : battle.getActivePokemonPlayer2();
-        PokemonCard opponentPokemon = playerActionInput.getTargetPokemon();
+        Player opponent = (currentPlayer.equals(battle.getPlayer1())) ? battle.getPlayer2() : battle.getPlayer1();
+        PokemonCard currentPokemon = (currentPlayer.equals(battle.getPlayer1())) ? battle.getActivePokemonPlayer1() : battle.getActivePokemonPlayer2();
+        PokemonCard opponentPokemon = (currentPlayer.equals(battle.getPlayer1())) ? battle.getActivePokemonPlayer2() : battle.getActivePokemonPlayer1();
 
         log.info(String.format(TURN_ACTION_LOG, currentPlayer.getName(), playerActionInput.getAction().toString()));
 

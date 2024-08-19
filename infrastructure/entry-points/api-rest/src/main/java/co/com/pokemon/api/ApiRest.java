@@ -1,4 +1,8 @@
 package co.com.pokemon.api;
+import co.com.pokemon.api.dto.NextTurnRequest;
+import co.com.pokemon.api.dto.PlayerActionRequest;
+import co.com.pokemon.api.dto.PlayerRequest;
+import co.com.pokemon.model.battle.status.BattleStatus;
 import co.com.pokemon.model.player.Player;
 import co.com.pokemon.model.player.action.PlayerAction;
 import co.com.pokemon.usecase.battle.BattleLauncherUseCase;
@@ -20,7 +24,7 @@ public class ApiRest {
     }
 
     @PostMapping(path = "battle/next-turn")
-    public void commandName(@RequestBody Player player, PlayerAction playerActionInput) {
-        battleLauncherUseCase.nextTurn(player, playerActionInput);
+    public BattleStatus commandName(@RequestBody NextTurnRequest request) {
+         return battleLauncherUseCase.nextTurn(request.getPlayer().toDto(), request.getAction().toDto());
     }
 }

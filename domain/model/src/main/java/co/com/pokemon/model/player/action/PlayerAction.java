@@ -12,5 +12,5 @@ public class PlayerAction {
     private final BattleAction action;
     private final PokemonCard targetPokemon;  // Usado en ataques
     private final PokemonCard newActivePokemon; // Usado en cambio de Pokémon
-    private final String item; // Usado si se selecciona un ítem
+    private final String item; 
 }

@@ -12,8 +12,12 @@ public class PokemonCardMapper {
         card.setHp(apiDto.getHp() != null ? Integer.parseInt(apiDto.getHp()) : 0);
 
         if (apiDto.getAttacks() != null && !apiDto.getAttacks().isEmpty()) {
+            String damageString = apiDto.getAttacks().get(0).getDamage();
+            int damage = (damageString != null && !damageString.isEmpty())
+                    ? Integer.parseInt(damageString.replaceAll("[^\\d]", ""))
+                    : 0;
             card.setAttackName(apiDto.getAttacks().get(0).getName());
-            card.setAttackDamage(apiDto.getAttacks().get(0).getDamage().isEmpty() ? 0 : Integer.parseInt(apiDto.getAttacks().get(0).getDamage()));
+            card.setAttackDamage(damage);
         }
 
         card.setWeaknessType(apiDto.getWeaknesses() != null && !apiDto.getWeaknesses().isEmpty() ? apiDto.getWeaknesses().get(0).getType() : "None");

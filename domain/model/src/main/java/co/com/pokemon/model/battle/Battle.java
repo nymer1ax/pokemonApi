@@ -26,8 +26,8 @@ public class Battle {
     public Battle(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
-        this.activePokemonPlayer1 = player1.getSelectedCards().get(0);
-        this.activePokemonPlayer2 = player2.getSelectedCards().get(0);
+        this.activePokemonPlayer1 = player1.getSelectedCards().isEmpty() ?  null: player1.getSelectedCards().get(0) ;
+        this.activePokemonPlayer2 = player2.getSelectedCards().isEmpty() ?  null: player2.getSelectedCards().get(0);
         this.isFinished = false;
     }
 

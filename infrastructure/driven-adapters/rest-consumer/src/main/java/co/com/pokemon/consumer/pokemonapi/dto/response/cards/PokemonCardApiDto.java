@@ -1,6 +1,7 @@
 package co.com.pokemon.consumer.pokemonapi.dto.response.cards;
 
 import co.com.pokemon.consumer.pokemonapi.dto.response.cards.objs.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PokemonCardApiDto {
     private String id;
     private String name;

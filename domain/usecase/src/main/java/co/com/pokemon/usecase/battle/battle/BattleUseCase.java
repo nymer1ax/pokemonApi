@@ -1,4 +1,4 @@
-package co.com.pokemon.usecase.battle;
+package co.com.pokemon.usecase.battle.battle;
 
 import co.com.pokemon.model.battle.Battle;
 import co.com.pokemon.model.battle.status.BattleStatus;

@@ -33,5 +33,8 @@ public class BattleDataEntity {
     private LocalDateTime endTime;
 
     @Column(name = "winner")
-    private String winner;
+    private Long winner;
+
+    @Column(name = "finished", nullable = false)
+    private boolean finished;
 }

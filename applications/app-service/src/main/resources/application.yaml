@@ -23,6 +23,7 @@ spring:
 adapter:
   pokemonapi:
     url: "https://api.pokemontcg.io/v2"
+    apikey: "${POKEMON_API_KEY}"
 
 management:
   health:

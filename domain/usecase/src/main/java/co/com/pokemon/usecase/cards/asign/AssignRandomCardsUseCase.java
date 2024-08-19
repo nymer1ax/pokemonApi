@@ -1,9 +1,7 @@
-package co.com.pokemon.usecase.assignrandomcards;
+package co.com.pokemon.usecase.cards.asign;
 
-import co.com.pokemon.model.player.Player;
 import co.com.pokemon.model.pokemoncard.PokemonCard;
-import co.com.pokemon.model.pokemoncard.gateways.PokemonCardRepository;
-import co.com.pokemon.usecase.validatecard.ValidateCardUseCase;
+import co.com.pokemon.usecase.cards.validate.ValidateCardUseCase;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

@@ -1,10 +1,10 @@
-package co.com.pokemon.usecase.preparebattle;
+package co.com.pokemon.usecase.battle.prepare;
 
 import co.com.pokemon.model.battle.Battle;
 import co.com.pokemon.model.player.Player;
 import co.com.pokemon.model.pokemoncard.PokemonCard;
-import co.com.pokemon.usecase.assignrandomcards.AssignRandomCardsUseCase;
-import co.com.pokemon.usecase.selectcard.SelectCardUseCase;
+import co.com.pokemon.usecase.cards.asign.AssignRandomCardsUseCase;
+import co.com.pokemon.usecase.cards.SelectCardUseCase;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

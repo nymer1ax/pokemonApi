@@ -17,5 +17,15 @@ import java.util.Set;
 public class Battle {
     private Player player1;
     private Player player2;
-    private Set<PokemonCard> selectedCards;
+    private PokemonCard activePokemonPlayer1;
+    private PokemonCard activePokemonPlayer2;
+    private boolean isFinished;
+
+    public Battle(Player player1, Player player2) {
+        this.player1 = player1;
+        this.player2 = player2;
+        this.activePokemonPlayer1 = player1.getSelectedCards().get(0); // Inicialmente el primer Pokémon
+        this.activePokemonPlayer2 = player2.getSelectedCards().get(0); // Inicialmente el primer Pokémon
+        this.isFinished = false;
+    }
 }

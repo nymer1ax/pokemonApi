@@ -1,4 +1,4 @@
-package co.com.pokemon.usecase.selectcard;
+package co.com.pokemon.usecase.cards;
 
 import co.com.pokemon.model.pokemoncard.PokemonCard;
 import co.com.pokemon.model.pokemoncard.gateways.PokemonCardRepository;

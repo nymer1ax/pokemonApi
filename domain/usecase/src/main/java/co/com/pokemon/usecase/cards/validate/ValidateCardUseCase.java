@@ -1,4 +1,4 @@
-package co.com.pokemon.usecase.validatecard;
+package co.com.pokemon.usecase.cards.validate;
 
 import co.com.pokemon.model.pokemoncard.PokemonCard;
 import lombok.RequiredArgsConstructor;

@@ -18,7 +18,10 @@ public class PokemonCard {
     private String weaknessType;
     private String resistanceType;
     private String retreatCost;
+    @Builder.Default
     private double defenseModifier = 1.0;
+
+    @Builder.Default
     private double attackModifier = 1.0;
 }
 

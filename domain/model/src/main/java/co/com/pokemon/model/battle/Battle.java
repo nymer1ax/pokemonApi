@@ -20,6 +20,7 @@ public class Battle {
     private Player winner;
     private PokemonCard activePokemonPlayer1;
     private PokemonCard activePokemonPlayer2;
+    private Player currentTurn;
     private boolean isFinished;
 
     public Battle(Player player1, Player player2) {
@@ -28,5 +29,9 @@ public class Battle {
         this.activePokemonPlayer1 = player1.getSelectedCards().get(0);
         this.activePokemonPlayer2 = player2.getSelectedCards().get(0);
         this.isFinished = false;
+    }
+
+    public void switchTurn() {
+        currentTurn = (currentTurn == player1) ? player2 : player1;
     }
 }

@@ -1,20 +1,26 @@
 package co.com.pokemon.api;
+import co.com.pokemon.model.player.Player;
+import co.com.pokemon.model.player.action.PlayerAction;
+import co.com.pokemon.usecase.battle.BattleLauncherUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/pokemon/", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class ApiRest {
-//    private final MyUseCase useCase;
 
 
-    @GetMapping(path = "/path")
-    public String commandName() {
-//      return useCase.doAction();
-        return "Hello World";
+    private final BattleLauncherUseCase battleLauncherUseCase;
+
+    @PostMapping(path = "battle/start")
+    public void startBatle() {
+        battleLauncherUseCase.startBattle(Player.builder().name("user").build(), Player.builder().name("system").build());
+    }
+
+    @PostMapping(path = "battle/next-turn")
+    public void commandName(@RequestBody Player player, PlayerAction playerActionInput) {
+        battleLauncherUseCase.nextTurn(player, playerActionInput);
     }
 }

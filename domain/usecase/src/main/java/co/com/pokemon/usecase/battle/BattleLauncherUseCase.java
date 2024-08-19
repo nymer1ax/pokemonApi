@@ -10,6 +10,7 @@ import co.com.pokemon.model.pokemoncard.PokemonCard;
 import co.com.pokemon.usecase.battle.battle.BattleUseCase;
 import co.com.pokemon.usecase.battle.manager.BattleManagerUseCase;
 import co.com.pokemon.usecase.battle.prepare.PrepareBattleUseCase;
+import co.com.pokemon.usecase.exceptions.NotYourTurnException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -25,28 +26,46 @@ public class BattleLauncherUseCase {
         Battle battle = battleManager.getCurrentBattle();
 
         prepareBattleUseCase.execute(battle, player1, player2, numberOfCards);
+        battle.setCurrentTurn(player1);
 
-        log.info("La batalla entre " + player1.getName() + " y " + player2.getName() + " ha comenzado!");
+        log.info(String.format("La batalla entre %s y %s ha comenzado!", player1.getName(), player2.getName()));
     }
 
     public BattleStatus nextTurn(Player player, PlayerAction playerActionInput) {
         Battle battle = battleManager.getCurrentBattle();
         BattleStatus status = battleUseCase.executeTurn(battle, player, playerActionInput);
 
+        if (!battle.getCurrentTurn().equals(player)) {
+            log.warn(String.format("No es el turno de %s. Es el turno de %s", player.getName(), battle.getCurrentTurn().getName()));
+            throw new NotYourTurnException("No es tu turno.");
+        }
+
         if (status.isBattleFinished()) {
             declareWinner(battle);
             battleManager.endBattle();
         }
 
+        battle.switchTurn();
+        log.info("Ahora es el turno de " + battle.getCurrentTurn().getName());
+
         return status;
     }
 
     private void declareWinner(Battle battle) {
-        if (battle.getPlayer1().getSelectedCards().stream().allMatch(card -> card.getHp() <= 0)) {
-            log.info(battle.getPlayer2().getName() + " es el ganador!");
-        } else if (battle.getPlayer2().getSelectedCards().stream().allMatch(card -> card.getHp() <= 0)) {
-            log.info(battle.getPlayer1().getName() + " es el ganador!");
+        boolean player1Lost = battle.getPlayer1().getSelectedCards().stream().allMatch(card -> card.getHp() <= 0);
+        boolean player2Lost = battle.getPlayer2().getSelectedCards().stream().allMatch(card -> card.getHp() <= 0);
+
+        if (player1Lost) {
+            log.info(String.format("%s es el ganador!", battle.getPlayer2().getName()));
+            battle.setWinner(battle.getPlayer2());
+            return;
+        }
+
+        if (player2Lost) {
+            log.info(String.format("%s es el ganador!", battle.getPlayer1().getName()));
+            battle.setWinner(battle.getPlayer1());
         }
     }
+
 
 }

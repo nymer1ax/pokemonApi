@@ -10,6 +10,8 @@ COPY gradlew.bat ./gradlew.bat
 COPY gradle ./gradle
 COPY build.gradle ./build.gradle
 COPY settings.gradle ./settings.gradle
+COPY main.gradle ./main.gradle  
+COPY . .
 
 # Hacer que el wrapper de Gradle sea ejecutable
 RUN chmod +x gradlew

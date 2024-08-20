@@ -19,7 +19,7 @@ public class ApiRest {
     private final BattleLauncherUseCase battleLauncherUseCase;
 
     @PostMapping(path = "battle/start/{name}")
-    public void startBatle(@PathVariable String name) {
+    public void startBatle(@PathVariable(name = "name")  String name) {
         battleLauncherUseCase.startBattle(Player.builder()
                         .name(name)
                         .build(),
@@ -34,7 +34,7 @@ public class ApiRest {
     }
 
     @GetMapping("battle/player/{name}")
-    public Player getPlayer(@PathVariable String name) {
+    public Player getPlayer(@PathVariable(name = "name") String name) {
         return battleLauncherUseCase.getPlayerInfo(name);
     }
 

@@ -4,6 +4,8 @@ import co.com.pokemon.model.player.Player;
 import co.com.pokemon.model.pokemoncard.PokemonCard;
 import lombok.*;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,11 +26,22 @@ public class Battle {
     public Battle(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
-        this.activePokemonPlayer1 = player1.getSelectedCards().isEmpty() ? null : player1.getSelectedCards().get(0);
-        this.activePokemonPlayer2 = player2.getSelectedCards().isEmpty() ? null : player2.getSelectedCards().get(0);
+        this.activePokemonPlayer1 = (Objects.isNull(player1.getSelectedCards()) || player1.getSelectedCards().isEmpty())
+                ? null
+                : player1.getSelectedCards().get(0);
+
+        this.activePokemonPlayer2 = (Objects.isNull(player2.getSelectedCards()) || player2.getSelectedCards().isEmpty())
+                ? null
+                : player2.getSelectedCards().get(0);
+
         this.isFinished = false;
-        this.player1Score = player1.getSelectedCards().isEmpty() ? 0 : player1.getSelectedCards().size();
-        this.player2Score = player2.getSelectedCards().isEmpty() ? 0 : player2.getSelectedCards().size();
+        this.player1Score = (Objects.isNull(player1.getSelectedCards()) || player1.getSelectedCards().isEmpty())
+                ? 0
+                : player1.getSelectedCards().size();
+
+        this.player2Score = (Objects.isNull(player2.getSelectedCards()) || player2.getSelectedCards().isEmpty())
+                ? 0
+                : player2.getSelectedCards().size();
     }
 
     /*

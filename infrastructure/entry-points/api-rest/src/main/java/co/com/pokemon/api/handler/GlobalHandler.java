@@ -1,6 +1,7 @@
 package co.com.pokemon.api.handler;
 import co.com.pokemon.usecase.exceptions.BattleInProgressException;
 import co.com.pokemon.usecase.exceptions.BattleNotFoundException;
+import co.com.pokemon.usecase.exceptions.IncorrectUserException;
 import co.com.pokemon.usecase.exceptions.NotYourTurnException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,12 @@ public class GlobalHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseRequest> handleBookNotExist(BattleNotFoundException ex) {
         return buildErrorResponse(ex, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IncorrectUserException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ResponseRequest> incorrectUser(IncorrectUserException ex) {
+        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({HttpClientErrorException.class, HttpServerErrorException.class})

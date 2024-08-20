@@ -10,6 +10,7 @@ import co.com.pokemon.model.pokemoncard.PokemonCard;
 import co.com.pokemon.usecase.battle.battle.BattleUseCase;
 import co.com.pokemon.usecase.battle.manager.BattleManagerUseCase;
 import co.com.pokemon.usecase.battle.prepare.PrepareBattleUseCase;
+import co.com.pokemon.usecase.exceptions.IncorrectUserException;
 import co.com.pokemon.usecase.exceptions.NotYourTurnException;
 import lombok.RequiredArgsConstructor;
 
@@ -69,5 +70,24 @@ public class BattleLauncherUseCase {
         }
     }
 
+    public Player getPlayerInfo(String name) {
 
+        Battle battle = battleManager.getCurrentBattle();
+
+        if(battle.getPlayer1().getName().equalsIgnoreCase(name)) {
+            return battle.getPlayer1();
+        }
+
+        if(battle.getPlayer2().getName().equalsIgnoreCase(name)) {
+            return battle.getPlayer2();
+        }
+
+        throw new IncorrectUserException("El usuario no está en la batalla");
+
+    }
+
+
+    public Battle getActiveBattle() {
+        return battleManager.getCurrentBattle();
+    }
 }

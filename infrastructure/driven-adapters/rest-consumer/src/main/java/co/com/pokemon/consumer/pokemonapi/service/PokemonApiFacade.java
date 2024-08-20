@@ -30,16 +30,6 @@ public class PokemonApiFacade {
                 .collectList()
                 .block();
 
-/*
-return pokemonApiRestConsumer.getFlux("/cards", PokemonCardApiResponseDto.class)
-                .flatMap(responseDto -> Flux.fromIterable(responseDto.getData()))
-                .map(PokemonCardMapper::toPokemonCard)
-                .subscribeOn(Schedulers.parallel()) // Procesa cada card en paralelo
-                .collectList() // Recoge los resultados en una lista
-                .block(); // Bloquea hasta que se complete y devuelve la lista
- */
-
-
     }
 
 

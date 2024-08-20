@@ -29,11 +29,15 @@ public class BattleManagerUseCase {
         return currentBattle;
     }
 
-    public void endBattle() {
+    public Battle finishBattle() {
         if (currentBattle != null) {
             currentBattle.setFinished(true);
-            currentBattle = null;
         }
+        return currentBattle;
+    }
+
+    public void endBattle() {
+        currentBattle = null;
     }
 
     public boolean isBattleInProgress() {

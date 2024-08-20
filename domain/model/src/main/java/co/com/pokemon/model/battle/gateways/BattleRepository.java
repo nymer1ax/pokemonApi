@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface BattleRepository {
     void initialize(Battle battle);
-    List<BattleReport> getReport();
-
-    List<BattleReport> getReportByBattleId(String battleId);
+    void finishBattle(Battle battle);
 }

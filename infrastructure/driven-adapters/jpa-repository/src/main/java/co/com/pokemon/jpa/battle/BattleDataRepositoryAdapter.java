@@ -20,19 +20,19 @@ implements BattleRepository
 {
     private final BattleDataRepository battleRepository;
 
-
     @Override
     public void initialize(Battle battle) {
         this.battleRepository.save(BattleMapper.toEntity.apply(battle));
     }
 
     @Override
-    public List<BattleReport> getReport() {
-        return this.battleRepository.findBattleReports();
-    }
-
-    @Override
-    public List<BattleReport> getReportByBattleId(String battleId) {
-        return this.battleRepository.findBattleReportsByBattleId(battleId);
+    public void finishBattle(Battle battle) {
+        Optional<BattleDataEntity> battleEntity = this.battleRepository.findByBattleId(battle.getId());
+        if (battleEntity.isPresent()) {
+            battleEntity.get().setFinished(true);
+            battleEntity.get().setEndTime(LocalDateTime.now());
+            battleEntity.get().setWinner(battle.getWinner().getName());
+            this.battleRepository.save(battleEntity.get());
+        }
     }
 }

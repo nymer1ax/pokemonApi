@@ -42,6 +42,7 @@ public class BattleLauncherUseCase {
         BattleStatus status = battleUseCase.executeTurn(battle, player, playerActionInput);
         if (status.isBattleFinished()) {
             declareWinner(battle);
+            battleManager.finishBattle();
             battleManager.endBattle();
         }
 

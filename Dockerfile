@@ -10,7 +10,6 @@ COPY gradlew.bat ./gradlew.bat
 COPY gradle ./gradle
 COPY build.gradle ./build.gradle
 COPY settings.gradle ./settings.gradle
-COPY deployment .
 
 # Hacer que el wrapper de Gradle sea ejecutable
 RUN chmod +x gradlew
@@ -39,4 +38,3 @@ USER appuser
 
 # Ejecutar la aplicación
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar pokemonapp.jar"]
-

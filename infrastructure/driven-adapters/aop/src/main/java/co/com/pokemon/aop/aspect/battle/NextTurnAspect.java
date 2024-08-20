@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class nextTurnAspect {
+public class NextTurnAspect {
 
     private final BattleStatusRepository battleStatusRepository;
     @Pointcut("execution(* co.com.pokemon.usecase.battle.battle.BattleUseCase.executeTurn(..))")

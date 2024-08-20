@@ -5,37 +5,34 @@ import co.com.pokemon.model.player.gateways.PlayerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Repository
 @RequiredArgsConstructor
 public class PlayerDataRepositoryAdapter implements PlayerRepository {
-
     private final PlayerDataRepository playerDataRepository;
+
     @Override
     public Player savePlayer(Player player) {
-        playerDataRepository.save(PlayerDataEntity
-                .builder()
-                        .name(player.getName())
-                .build());
+        playerDataRepository.save(PlayerMapper.toEntity.apply(player));
         return player;
     }
 
     @Override
     public Optional<Player> findPlayerByName(String name) {
-        Optional<PlayerDataEntity> exist = playerDataRepository.findByName(name);
-        if(exist.isEmpty()){
-            return Optional.empty();
-        }
-        return Optional.of(Player.builder().name(name).build());
+        return playerDataRepository.findByName(name)
+                .map(PlayerMapper.toModel);
     }
 
     @Override
     public List<Player> findAllPlayers() {
-        Iterable<PlayerDataEntity> playerEntities = playerDataRepository.findAll();
-        List<Player> players = new ArrayList<>();
-        playerEntities.forEach(entity -> players.add(Player.builder().name(entity.getName()).build()));
-        return players;
+        return StreamSupport.stream(playerDataRepository.findAll().spliterator(), false)
+                .map(PlayerMapper.toModel)
+                .collect(Collectors.toList());
     }
+
 }

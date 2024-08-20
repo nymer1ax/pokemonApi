@@ -1,8 +1,6 @@
 package co.com.pokemon.jpa.pokemoncard;
 
-import co.com.pokemon.jpa.battle.BattleDataEntity;
 import co.com.pokemon.jpa.battle.BattleDataRepository;
-import co.com.pokemon.jpa.player.PlayerDataRepository;
 import co.com.pokemon.jpa.playercard.PlayerCardDataEntity;
 import co.com.pokemon.jpa.playercard.PlayerCardDataRepository;
 import co.com.pokemon.model.pokemoncard.PokemonCard;
@@ -18,44 +16,22 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class PokemonCardDataRepositoryAdapter implements PokemonCardRepository {
 
-    private final PlayerCardDataRepository playerCardDataRepository;
-    private final PlayerDataRepository playerDataRepository;
-    private final PokemonCardDataRepository pokemonCardDataRepository;
     private final BattleDataRepository battleDataRepository;
+    private final PlayerCardDataRepository playerCardDataRepository;
+    private final PokemonCardDataRepository pokemonCardDataRepository;
 
     @Override
-    public void saveAll(String name, List<PokemonCard> pokemonCardList) {
+    public void saveAll(String playerId, List<PokemonCard> pokemonCardList, String battleId) {
+        List<PokemonCardDataEntity> cards = PokemonCardMapper.mapToPokemonCardEntities(pokemonCardList);
+        Iterable<PokemonCardDataEntity> savedCards = pokemonCardDataRepository.saveAll(cards);
+        savePlayerCard(savedCards, playerId, battleId);
+    }
 
-        String battleId = battleDataRepository.findLatestUnfinishedBattle().getBattleId();
-
-        List<PokemonCardDataEntity> pokemonEntities = pokemonCardList.stream()
-                .map(obj -> PokemonCardDataEntity.builder()
-                        .cardId(obj.getId())
-                        .name(obj.getName())
-                        .type(obj.getType())
-                        .hp(obj.getHp())
-                        .maxHp(obj.getMaxHp())
-                        .attackDamage(obj.getAttackDamage())
-                        .weaknessType(obj.getWeaknessType())
-                        .resistanceType(obj.getResistanceType())
-                        .retreatCost(obj.getRetreatCost())
-                        .build())
+    private void savePlayerCard(Iterable<PokemonCardDataEntity> savedEntities, String playerId, String battleId) {
+        List<PlayerCardDataEntity> playerCardEntities = StreamSupport.stream(savedEntities.spliterator(), false)
+                .map(entity -> PokemonCardMapper.toPlayerCardDataEntity(playerId, entity, battleId))
                 .collect(Collectors.toList());
-
-
-        Iterable<PokemonCardDataEntity> savedEntities = pokemonCardDataRepository.saveAll(pokemonEntities);
-
-        List<PlayerCardDataEntity> savedPokemonEntities = StreamSupport.stream(savedEntities.spliterator(), false)
-                .map(obj -> PlayerCardDataEntity.builder()
-                        .cardId(obj.getCardId())
-                        .playerId(name)
-                        .battleId(battleId)
-                        .build())
-                .collect(Collectors.toList());
-
-        playerCardDataRepository.saveAll(savedPokemonEntities);
-
-
+        playerCardDataRepository.saveAll(playerCardEntities);
     }
 
 }

@@ -22,17 +22,26 @@ public class CreateBattleAspect {
 
     @Pointcut("execution(* co.com.pokemon.usecase.battle.manager.BattleManagerUseCase.createBattle(..))")
     public void createBattlePointcut() {
-        // Definición del Pointcut
     }
 
     @AfterReturning(pointcut = "createBattlePointcut()", returning = "battle")
     public void afterReturningCreateBattle(JoinPoint joinPoint, Battle battle) {
+        savePlayers(battle);
+        savePokemonCards(battle);
+        initializeBattle(battle);
+    }
 
+    private void savePlayers(Battle battle) {
         playerRepository.savePlayer(battle.getPlayer1());
         playerRepository.savePlayer(battle.getPlayer2());
-        pokemonCardRepository.saveAll(battle.getPlayer1().getName(), battle.getPlayer1().getSelectedCards());
-        pokemonCardRepository.saveAll(battle.getPlayer2().getName(), battle.getPlayer2().getSelectedCards());
-        battleRepository.initialize(battle);
+    }
 
+    private void savePokemonCards(Battle battle) {
+        pokemonCardRepository.saveAll(battle.getPlayer1().getName(), battle.getPlayer1().getSelectedCards(), battle.getId());
+        pokemonCardRepository.saveAll(battle.getPlayer2().getName(), battle.getPlayer2().getSelectedCards(), battle.getId());
+    }
+
+    private void initializeBattle(Battle battle) {
+        battleRepository.initialize(battle);
     }
 }

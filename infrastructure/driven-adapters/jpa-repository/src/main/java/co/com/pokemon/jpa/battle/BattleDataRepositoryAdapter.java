@@ -21,13 +21,6 @@ implements BattleRepository
 
     @Override
     public void initialize(Battle battle) {
-        this.battleRepository.save(BattleDataEntity
-                .builder()
-                        .player1Id(battle.getPlayer1().getName())
-                        .player2Id(battle.getPlayer2().getName())
-                        .startTime(LocalDateTime.now())
-                        .battleId(battle.getId())
-                        .finished(battle.isFinished())
-                .build());
+        this.battleRepository.save(BattleMapper.toEntity.apply(battle));
     }
 }

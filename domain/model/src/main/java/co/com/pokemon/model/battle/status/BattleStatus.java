@@ -10,5 +10,7 @@ public class BattleStatus {
     private int targetPokemonHp;
     private int attackerPokemonHp;
     private boolean isBattleFinished;
+    private int player1Score;
+    private int player2Score;
     private String winner;
 }

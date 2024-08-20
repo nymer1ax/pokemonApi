@@ -8,6 +8,7 @@ import co.com.pokemon.usecase.exceptions.BattleNotFoundException;
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BattleManagerUseCase {
+    public static final int NUMBER_OF_CARDS = 3;
     private Battle currentBattle;
     private final PrepareBattleUseCase prepareBattleUseCase;
 
@@ -15,9 +16,9 @@ public class BattleManagerUseCase {
         if (currentBattle != null && !currentBattle.isFinished()) {
             throw new BattleInProgressException("Ya hay una batalla en curso.");
         }
-        currentBattle = Battle.builder().player1(player1).player2(player2).build();
-        prepareBattleUseCase.execute(currentBattle, player1, player2, 10);
-        currentBattle = currentBattle.toBuilder().player1(player1).player2(player2).build();
+        currentBattle = new Battle(player1, player2);
+        prepareBattleUseCase.execute(currentBattle, player1, player2, NUMBER_OF_CARDS);
+        currentBattle = new Battle(player1, player2);
     }
 
     public Battle getCurrentBattle() {

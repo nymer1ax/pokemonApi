@@ -11,8 +11,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BattleUseCase {
 
-    private final LoggerGateway log;
 
+    private final LoggerGateway log;
+    private static final String NEXT_POKEMON_LOG = "%s ha cambiado a %s";
     private static final String TURN_ACTION_LOG = "Turno de %s: Acción -> %s";
     private static final String ATTACK_LOG = "%s atacó a %s con %s causando %d de daño.";
     private static final String DEFEATED_LOG = "%s ha sido derrotado!";
@@ -29,8 +30,8 @@ public class BattleUseCase {
 
     public BattleStatus executeTurn(Battle battle, Player currentPlayer, PlayerAction playerActionInput) {
         Player opponent = (currentPlayer.equals(battle.getPlayer1())) ? battle.getPlayer2() : battle.getPlayer1();
-        PokemonCard currentPokemon = (currentPlayer.equals(battle.getPlayer1())) ? battle.getActivePokemonPlayer1() : battle.getActivePokemonPlayer2();
-        PokemonCard opponentPokemon = (currentPlayer.equals(battle.getPlayer1())) ? battle.getActivePokemonPlayer2() : battle.getActivePokemonPlayer1();
+        PokemonCard currentPokemon = battle.getActivePokemonForPlayer(currentPlayer);
+        PokemonCard opponentPokemon = battle.getActivePokemonForPlayer(opponent);
 
         log.info(String.format(TURN_ACTION_LOG, currentPlayer.getName(), playerActionInput.getAction().toString()));
 
@@ -51,7 +52,7 @@ public class BattleUseCase {
                 break;
         }
 
-        checkForKnockOut(battle, opponent);
+        handlePokemonDefeated(battle, opponent, currentPlayer);
 
         return BattleStatus.builder()
                 .currentPlayer(currentPlayer.getName())
@@ -95,23 +96,23 @@ public class BattleUseCase {
         return baseDamage;
     }
 
-    private void performDefend(PokemonCard pokemon) {
-        log.info(String.format(DEFENDING_LOG, pokemon.getName()));
-        pokemon.setDefenseModifier(0.5);
+    private void performDefend(PokemonCard currentPokemon) {
+        log.info(String.format(DEFENDING_LOG, currentPokemon.getName()));
+        currentPokemon.setDefenseModifier(0.5);
     }
 
-    private void useItem(PokemonCard pokemon, String item) {
-        log.info(String.format(USE_ITEM_LOG, item, pokemon.getName()));
+    private void useItem(PokemonCard currentPokemon, String item) {
+        log.info(String.format(USE_ITEM_LOG, item, currentPokemon.getName()));
 
         switch (item.toLowerCase()) {
             case "potion":
-                int healedHp = Math.min(pokemon.getHp() + 20, pokemon.getMaxHp());
-                pokemon.setHp(healedHp);
-                log.info(String.format(HP_RECOVERED_LOG, pokemon.getName()));
+                int healedHp = Math.min(currentPokemon.getHp() + 20, currentPokemon.getMaxHp());
+                currentPokemon.setHp(healedHp);
+                log.info(String.format(HP_RECOVERED_LOG, currentPokemon.getName()));
                 break;
             case "attack_boost":
-                pokemon.setAttackModifier(1.5);
-                log.info(String.format(ATTACK_BOOST_LOG, pokemon.getName()));
+                currentPokemon.setAttackModifier(1.5);
+                log.info(String.format(ATTACK_BOOST_LOG, currentPokemon.getName()));
                 break;
             default:
                 log.warn(String.format(UNKNOWN_ITEM_LOG, item));
@@ -119,22 +120,33 @@ public class BattleUseCase {
         }
     }
 
-    private void switchPokemon(Player player, PokemonCard newPokemon, Battle battle) {
-        if (player == battle.getPlayer1()) {
-            battle.setActivePokemonPlayer1(newPokemon);
-        } else {
-            battle.setActivePokemonPlayer2(newPokemon);
-        }
-        log.info(String.format(SWITCH_POKEMON_LOG, player.getName(), newPokemon.getName()));
+    private void switchPokemon(Player currentPlayer, PokemonCard newPokemon, Battle battle) {
+        battle.setActivePokemonForPlayer(currentPlayer, newPokemon);
+        log.info(String.format(SWITCH_POKEMON_LOG, currentPlayer.getName(), newPokemon.getName()));
     }
 
-    private void checkForKnockOut(Battle battle, Player opponent) {
-        if (opponent.getSelectedCards().stream().allMatch(card -> card.getHp() <= 0)) {
+    private void handlePokemonDefeated(Battle battle, Player opponent, Player currentPlayer) {
+        if (!opponent.equals(currentPlayer)) {
+            return;
+        }
+
+        PokemonCard defeatedPokemon = battle.getActivePokemonForPlayer(currentPlayer);
+        if (defeatedPokemon.getHp() > 0) {
+            return;
+        }
+
+        battle.removeDefeatedPokemon(currentPlayer, defeatedPokemon);
+        battle.updateScore(currentPlayer);
+
+        try {
+            PokemonCard nextPokemon = battle.getNextAvailablePokemon(currentPlayer);
+            battle.setActivePokemonForPlayer(currentPlayer, nextPokemon);
+            log.info(String.format(NEXT_POKEMON_LOG, currentPlayer.getName(), nextPokemon.getName()));
+        } catch (IllegalStateException e) {
+            log.info(String.format(BATTLE_LOST_LOG, currentPlayer.getName()));
             battle.setFinished(true);
-
-            log.info(String.format(BATTLE_WON_LOG, battle.getPlayer1().getName()));
-            log.info(String.format(BATTLE_LOST_LOG, opponent.getName()));
         }
     }
+
 
 }

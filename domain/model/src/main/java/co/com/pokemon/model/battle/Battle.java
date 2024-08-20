@@ -5,6 +5,7 @@ import co.com.pokemon.model.pokemoncard.PokemonCard;
 import lombok.*;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class Battle {
-
+    private String id;
     private Player player1;
     private Player player2;
     private Player currentTurn;
@@ -24,6 +25,7 @@ public class Battle {
     private int player2Score;
 
     public Battle(Player player1, Player player2) {
+        this.id = UUID.randomUUID().toString();
         this.player1 = player1;
         this.player2 = player2;
         this.activePokemonPlayer1 = (Objects.isNull(player1.getSelectedCards()) || player1.getSelectedCards().isEmpty())

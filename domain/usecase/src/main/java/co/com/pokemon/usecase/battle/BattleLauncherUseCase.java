@@ -1,12 +1,10 @@
 package co.com.pokemon.usecase.battle;
 
 import co.com.pokemon.model.battle.Battle;
-import co.com.pokemon.model.battle.action.BattleAction;
 import co.com.pokemon.model.battle.status.BattleStatus;
 import co.com.pokemon.model.logger.LoggerGateway;
 import co.com.pokemon.model.player.Player;
 import co.com.pokemon.model.player.action.PlayerAction;
-import co.com.pokemon.model.pokemoncard.PokemonCard;
 import co.com.pokemon.usecase.battle.battle.BattleUseCase;
 import co.com.pokemon.usecase.battle.manager.BattleManagerUseCase;
 import co.com.pokemon.usecase.battle.prepare.PrepareBattleUseCase;
@@ -27,8 +25,7 @@ public class BattleLauncherUseCase {
     private final LoggerGateway log;
 
     public void startBattle(Player player1, Player player2) {
-        battleManager.createBattle(player1, player2);
-        Battle battle = battleManager.getCurrentBattle();
+        Battle battle = battleManager.createBattle(player1, player2);
         battle.setCurrentTurn(player1);
         log.info(String.format(START_LOG, player1.getName(), player2.getName()));
     }
@@ -55,7 +52,7 @@ public class BattleLauncherUseCase {
     }
 
     private void declareWinner(Battle battle) {
-        boolean player1Lost =  battle.hasPlayerLost(battle.getPlayer1());
+        boolean player1Lost = battle.hasPlayerLost(battle.getPlayer1());
         boolean player2Lost = battle.hasPlayerLost(battle.getPlayer2());
 
         if (player1Lost) {
@@ -74,11 +71,11 @@ public class BattleLauncherUseCase {
 
         Battle battle = battleManager.getCurrentBattle();
 
-        if(battle.getPlayer1().getName().equalsIgnoreCase(name)) {
+        if (battle.getPlayer1().getName().equalsIgnoreCase(name)) {
             return battle.getPlayer1();
         }
 
-        if(battle.getPlayer2().getName().equalsIgnoreCase(name)) {
+        if (battle.getPlayer2().getName().equalsIgnoreCase(name)) {
             return battle.getPlayer2();
         }
 
@@ -90,4 +87,6 @@ public class BattleLauncherUseCase {
     public Battle getActiveBattle() {
         return battleManager.getCurrentBattle();
     }
+
+
 }

@@ -1,7 +1,7 @@
 package co.com.pokemon.usecase.cards;
 
 import co.com.pokemon.model.pokemoncard.PokemonCard;
-import co.com.pokemon.model.pokemoncard.gateways.PokemonCardRepository;
+import co.com.pokemon.model.pokemoncard.gateways.PokemonCardGateway;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class SelectCardUseCase {
-    private final PokemonCardRepository pokemonCardRepository;
+    private final PokemonCardGateway pokemonCardRepository;
 
     public List<PokemonCard> execute() {
         List<PokemonCard> allCards = pokemonCardRepository.getAll();

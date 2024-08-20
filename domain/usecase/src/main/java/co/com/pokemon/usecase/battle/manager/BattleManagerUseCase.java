@@ -12,13 +12,13 @@ public class BattleManagerUseCase {
     private Battle currentBattle;
     private final PrepareBattleUseCase prepareBattleUseCase;
 
-    public void createBattle(Player player1, Player player2) {
+    public Battle createBattle(Player player1, Player player2) {
         if (currentBattle != null && !currentBattle.isFinished()) {
             throw new BattleInProgressException("Ya hay una batalla en curso.");
         }
         currentBattle = new Battle(player1, player2);
         prepareBattleUseCase.execute(currentBattle, player1, player2, NUMBER_OF_CARDS);
-        currentBattle = new Battle(player1, player2);
+        return new Battle(player1, player2);
     }
 
     public Battle getCurrentBattle() {

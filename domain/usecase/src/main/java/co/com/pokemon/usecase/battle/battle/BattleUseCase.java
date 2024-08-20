@@ -61,11 +61,13 @@ public class BattleUseCase {
         }
 
         return BattleStatus.builder()
+                .battleId(battle.getId())
                 .currentPlayer(currentPlayer.getName())
                 .action(actionPerformed)
+                .attackerPokemon(currentPokemon.getName())
+                .attackerPokemonHp(currentPokemon.getHp())
                 .targetPokemon(opponentPokemon.getName())
                 .targetPokemonHp(opponentPokemon.getHp())
-                .attackerPokemonHp(currentPokemon.getHp())
                 .player1Score(battle.getPlayer1Score())
                 .player2Score(battle.getPlayer2Score())
                 .isBattleFinished(battle.isFinished())

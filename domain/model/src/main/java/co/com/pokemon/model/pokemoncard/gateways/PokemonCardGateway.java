@@ -4,6 +4,6 @@ import co.com.pokemon.model.pokemoncard.PokemonCard;
 
 import java.util.List;
 
-public interface PokemonCardRepository {
-    void saveAll(String name, List<PokemonCard> pokemonCard);
+public interface PokemonCardGateway {
+    List<PokemonCard> getAll();
 }

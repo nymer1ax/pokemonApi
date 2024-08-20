@@ -15,9 +15,7 @@ public class PlayerDataEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "player_id", nullable = false, unique = true)
-    private String playerId;
-
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
+
 }

@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PokemonCardEntity {
+public class PokemonCardDataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

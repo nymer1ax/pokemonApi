@@ -34,13 +34,14 @@ public class BattleLauncherUseCase {
 
     public BattleStatus nextTurn(Player player, PlayerAction playerActionInput) {
         Battle battle = battleManager.getCurrentBattle();
-        BattleStatus status = battleUseCase.executeTurn(battle, player, playerActionInput);
 
         if (!battle.getCurrentTurn().equals(player)) {
             log.warn(String.format(NOT_TURN_LOG, player.getName(), battle.getCurrentTurn().getName()));
             throw new NotYourTurnException("No es tu turno.");
         }
 
+
+        BattleStatus status = battleUseCase.executeTurn(battle, player, playerActionInput);
         if (status.isBattleFinished()) {
             declareWinner(battle);
             battleManager.endBattle();

@@ -24,7 +24,7 @@ public class ApiRest {
     }
 
     @PostMapping(path = "battle/next-turn")
-    public BattleStatus commandName(@RequestBody NextTurnRequest request) {
+    public BattleStatus battleMovement(@RequestBody NextTurnRequest request) {
          return battleLauncherUseCase.nextTurn(request.getPlayer().toDto(), request.getAction().toDto());
     }
 }

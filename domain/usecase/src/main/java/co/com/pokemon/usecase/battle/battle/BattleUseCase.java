@@ -29,6 +29,7 @@ public class BattleUseCase {
     private static final String BATTLE_LOST_LOG = "%s ha perdido la batalla!";
 
     public BattleStatus executeTurn(Battle battle, Player currentPlayer, PlayerAction playerActionInput) {
+        setSelectedCardsToInputPlayer(battle, currentPlayer);
         Player opponent = (currentPlayer.equals(battle.getPlayer1())) ? battle.getPlayer2() : battle.getPlayer1();
         PokemonCard currentPokemon = battle.getActivePokemonForPlayer(currentPlayer);
         PokemonCard opponentPokemon = battle.getActivePokemonForPlayer(opponent);
@@ -52,7 +53,12 @@ public class BattleUseCase {
                 break;
         }
 
-        handlePokemonDefeated(battle, opponent, currentPlayer);
+        handlePokemonDefeated(battle, currentPlayer);
+
+        if (battle.isFinished()) {
+            determineWinner(battle, currentPlayer, opponent);
+            log.info(String.format(BATTLE_WON_LOG, battle.getWinner().getName()));
+        }
 
         return BattleStatus.builder()
                 .currentPlayer(currentPlayer.getName())
@@ -60,9 +66,16 @@ public class BattleUseCase {
                 .targetPokemon(opponentPokemon.getName())
                 .targetPokemonHp(opponentPokemon.getHp())
                 .attackerPokemonHp(currentPokemon.getHp())
+                .player1Score(battle.getPlayer1Score())
+                .player2Score(battle.getPlayer2Score())
                 .isBattleFinished(battle.isFinished())
-                .winner(battle.isFinished() ? currentPlayer.getName() : null)
+                .winner(battle.isFinished() ? battle.getWinner().getName()  : null)
                 .build();
+    }
+
+    private static void setSelectedCardsToInputPlayer(Battle battle, Player currentPlayer) {
+        Player current = battle.getPlayer1().equals(currentPlayer) ? battle.getPlayer1() : battle.getPlayer2();
+        currentPlayer.setSelectedCards(current.getSelectedCards());
     }
 
     private void performAttack(PokemonCard attacker, PokemonCard defender) {
@@ -125,11 +138,7 @@ public class BattleUseCase {
         log.info(String.format(SWITCH_POKEMON_LOG, currentPlayer.getName(), newPokemon.getName()));
     }
 
-    private void handlePokemonDefeated(Battle battle, Player opponent, Player currentPlayer) {
-        if (!opponent.equals(currentPlayer)) {
-            return;
-        }
-
+    private void handlePokemonDefeated(Battle battle, Player currentPlayer) {
         PokemonCard defeatedPokemon = battle.getActivePokemonForPlayer(currentPlayer);
         if (defeatedPokemon.getHp() > 0) {
             return;
@@ -145,6 +154,14 @@ public class BattleUseCase {
         } catch (IllegalStateException e) {
             log.info(String.format(BATTLE_LOST_LOG, currentPlayer.getName()));
             battle.setFinished(true);
+        }
+    }
+
+    private void determineWinner(Battle battle, Player currentPlayer, Player opponent) {
+        if (battle.hasPlayerLost(currentPlayer)) {
+            battle.setWinner(opponent);
+        } else {
+            battle.setWinner(currentPlayer);
         }
     }
 

@@ -15,14 +15,12 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerActionRequest {
     private  BattleAction action;
-    private  PokemonCard targetPokemon;
     private  PokemonCard newActivePokemon;
     private  String item;
 
     public PlayerAction toDto() {
         return PlayerAction.builder()
                 .action(action)
-                .targetPokemon(targetPokemon)
                 .newActivePokemon(newActivePokemon)
                 .item(item)
                 .build();

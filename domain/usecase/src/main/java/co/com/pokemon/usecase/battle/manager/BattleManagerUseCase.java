@@ -18,7 +18,8 @@ public class BattleManagerUseCase {
         }
         currentBattle = new Battle(player1, player2);
         prepareBattleUseCase.execute(currentBattle, player1, player2, NUMBER_OF_CARDS);
-        return new Battle(player1, player2);
+        currentBattle = new Battle(player1, player2);
+        return currentBattle;
     }
 
     public Battle getCurrentBattle() {

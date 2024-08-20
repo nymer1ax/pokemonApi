@@ -4,7 +4,8 @@ import co.com.pokemon.model.player.Player;
 import co.com.pokemon.model.pokemoncard.PokemonCard;
 import lombok.*;
 
-import java.util.Objects;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -28,92 +29,70 @@ public class Battle {
         this.id = UUID.randomUUID().toString();
         this.player1 = player1;
         this.player2 = player2;
-        this.activePokemonPlayer1 = (Objects.isNull(player1.getSelectedCards()) || player1.getSelectedCards().isEmpty())
-                ? null
-                : player1.getSelectedCards().get(0);
+        this.currentTurn = player1;
 
-        this.activePokemonPlayer2 = (Objects.isNull(player2.getSelectedCards()) || player2.getSelectedCards().isEmpty())
-                ? null
-                : player2.getSelectedCards().get(0);
+        this.activePokemonPlayer1 = getFirstPokemon(player1);
+        this.activePokemonPlayer2 = getFirstPokemon(player2);
+
+        this.player1Score = getSelectedCardsCount(player1);
+        this.player2Score = getSelectedCardsCount(player2);
 
         this.isFinished = false;
-        this.player1Score = (Objects.isNull(player1.getSelectedCards()) || player1.getSelectedCards().isEmpty())
-                ? 0
-                : player1.getSelectedCards().size();
-
-        this.player2Score = (Objects.isNull(player2.getSelectedCards()) || player2.getSelectedCards().isEmpty())
-                ? 0
-                : player2.getSelectedCards().size();
     }
 
-    /*
-     * Método para cambiar el Pokémon activo de un jugador, validando que el nuevo Pokémon esté en la lista de seleccionados.
-     */
+    private PokemonCard getFirstPokemon(Player player) {
+        return Optional.ofNullable(player.getSelectedCards())
+                .filter(cards -> !cards.isEmpty())
+                .map(cards -> cards.get(0))
+                .orElse(null);
+    }
+
+    private int getSelectedCardsCount(Player player) {
+        return Optional.ofNullable(player.getSelectedCards())
+                .map(List::size)
+                .orElse(0);
+    }
+
+
     public void setActivePokemonForPlayer(Player player, PokemonCard newPokemon) {
-        if (!player.getSelectedCards().contains(newPokemon)) {
-            return;
+        if (player.getSelectedCards().contains(newPokemon)) {
+            if (player.equals(player1)) {
+                this.activePokemonPlayer1 = newPokemon;
+            } else if (player.equals(player2)) {
+                this.activePokemonPlayer2 = newPokemon;
+            }
         }
-
-        if (player.equals(player1)) {
-            this.activePokemonPlayer1 = newPokemon;
-        } else if (player.equals(player2)) {
-            this.activePokemonPlayer2 = newPokemon;
-        }
-
     }
 
     public void switchTurn() {
         currentTurn = (currentTurn == player1) ? player2 : player1;
     }
 
-    /*
-     Método para obtener el Pokémon activo de un jugador
-     */
     public PokemonCard getActivePokemonForPlayer(Player player) {
         return player.equals(player1) ? activePokemonPlayer1 : activePokemonPlayer2;
     }
 
-    /*
-     Método para actualizar la lista de Pokémon activos del jugador cuando uno es eliminado
-     */
     public void removeDefeatedPokemon(Player player, PokemonCard defeatedPokemon) {
         player.getSelectedCards().remove(defeatedPokemon);
         updateScore(player);
     }
 
-    /*
-     Método para verificar si un jugador ha perdido todos sus Pokémon
-     */
     public boolean hasPlayerLost(Player player) {
         return player.getSelectedCards().isEmpty();
     }
 
-    /*
-     Método para actualizar el score cuando un Pokémon es derrotado
-     */
     public void updateScore(Player player) {
         if (player.equals(player1)) {
-            player1Score = player.getSelectedCards().size();
+            player1Score = getSelectedCardsCount(player1);
         } else if (player.equals(player2)) {
-            player2Score = player.getSelectedCards().size();
+            player2Score = getSelectedCardsCount(player2);
         }
     }
 
-    /*
-     Método para obtener el score de un jugador
-     */
     public int getScore(Player player) {
         return player.equals(player1) ? player1Score : player2Score;
     }
 
-
-    /**
-     * Obtiene el siguiente Pokémon disponible que tenga HP > 0.
-     *
-     * @param player El jugador que está buscando el próximo Pokémon activo.
-     * @return El próximo Pokémon disponible que aún tiene HP > 0.
-     * @throws IllegalStateException si no hay Pokémon disponibles.
-     */
     public PokemonCard getNextAvailablePokemon(Player player) {
         return player.getSelectedCards().stream()
                 .filter(card -> card.getHp() > 0)
@@ -121,5 +100,4 @@ public class Battle {
                 .orElseThrow(() -> new IllegalStateException(
                         String.format("El jugador %s no tiene más Pokémon disponibles.", player.getName())));
     }
-
 }

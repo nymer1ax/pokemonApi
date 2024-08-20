@@ -71,7 +71,7 @@ public class BattleUseCase {
                 .player1Score(battle.getPlayer1Score())
                 .player2Score(battle.getPlayer2Score())
                 .isBattleFinished(battle.isFinished())
-                .winner(battle.isFinished() ? battle.getWinner().getName()  : null)
+                .winner(battle.isFinished() ? battle.getWinner().getName()  : "N/A")
                 .build();
     }
 

@@ -2,6 +2,7 @@ package co.com.pokemon.jpa.movement;
 
 import co.com.pokemon.model.battle.status.BattleStatus;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 public class BattleMovementMapper {
@@ -18,5 +19,6 @@ public class BattleMovementMapper {
                     .attackerCardHp(battleStatus.getAttackerPokemonHp())
                     .player1Score(battleStatus.getPlayer1Score())
                     .player2Score(battleStatus.getPlayer2Score())
+                    .winner(Objects.isNull(battleStatus.getWinner()) ? null : battleStatus.getWinner())
                     .build();
 }

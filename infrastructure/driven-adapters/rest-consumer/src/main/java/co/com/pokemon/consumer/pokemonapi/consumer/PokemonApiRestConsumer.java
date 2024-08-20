@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -41,6 +42,19 @@ public class PokemonApiRestConsumer {
                 .bodyToMono(responseType)
                 .onErrorMap(IOException.class, ex -> new IOException("Failed to call " + baseUrl + uri, ex));
     }
+
+    @CircuitBreaker(name = "pokemonApiGetCircuitBreaker", fallbackMethod = "fallbackGet")
+    @Retry(name = "pokemonApiGetRetry")
+    public <T> Flux<T> getFlux(String uri, Class<T> responseType) {
+        return webClient.get()
+                .uri(uri)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
+                .retrieve()
+                .bodyToFlux(responseType)
+                .onErrorMap(IOException.class, ex -> new IOException("Failed to call " + baseUrl + uri, ex));
+    }
+
 
     @CircuitBreaker(name = "pokemonApiPostCircuitBreaker", fallbackMethod = "fallbackPost")
     @Retry(name = "pokemonApiPostRetry")

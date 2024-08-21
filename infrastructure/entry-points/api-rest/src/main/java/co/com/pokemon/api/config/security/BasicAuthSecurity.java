@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -15,15 +14,19 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class BasicAuthSecurity {
 
-    @Value("${users.auth.username}")
-    private String username;
+    private final String username;
+    private final String password;
 
-    @Value("${users.auth.password}")
-    private String password;
+    public BasicAuthSecurity(
+            @Value("${users.auth.username}") String username,
+            @Value("${users.auth.password}") String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
@@ -34,6 +37,6 @@ public class BasicAuthSecurity {
 
     @Bean
     public AuthenticationManager authenticationManager() {
-        return new co.com.pokemon.api.config.security.BasicAuthenticationManager(username, password);
+        return new BasicAuthenticationManager(username, password);
     }
 }

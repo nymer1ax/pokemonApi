@@ -24,6 +24,7 @@ public class BattleManagerUseCase {
 
         Battle battle = new Battle(player1, player2);
         prepareBattleUseCase.execute(battle, player1, player2, NUMBER_OF_CARDS);
+        battle = new Battle(player1, player2);
         battleHolder.setBattle(battle);
         return battle;
     }

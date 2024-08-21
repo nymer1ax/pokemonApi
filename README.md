@@ -1,54 +1,6 @@
 # Proyecto Base Implementando Clean Architecture
 
-## Antes de Iniciar
-
-Empezaremos por explicar los diferentes componentes del proyectos y partiremos de los componentes externos, continuando con los componentes core de negocio (dominio) y por último el inicio y configuración de la aplicación.
-
-Lee el artículo [Clean Architecture — Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
-
-# Arquitectura
-
-![Clean Architecture](https://miro.medium.com/max/1400/1*ZdlHz8B0-qu9Y-QO3AXR_w.png)
-
-## Domain
-
-Es el módulo más interno de la arquitectura, pertenece a la capa del dominio y encapsula la lógica y reglas del negocio mediante modelos y entidades del dominio.
-
-## Usecases
-
-Este módulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define lógica de aplicación y reacciona a las invocaciones desde el módulo de entry points, orquestando los flujos hacia el módulo de entities.
-
-## Infrastructure
-
-### Helpers
-
-En el apartado de helpers tendremos utilidades generales para los Driven Adapters y Entry Points.
-
-Estas utilidades no están arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
-genéricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
-basadas en el patrón de diseño [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
-
-Estas clases no puede existir solas y debe heredarse su compartimiento en los **Driven Adapters**
-
-### Driven Adapters
-
-Los driven adapter representan implementaciones externas a nuestro sistema, como lo son conexiones a servicios rest,
-soap, bases de datos, lectura de archivos planos, y en concreto cualquier origen y fuente de datos con la que debamos
-interactuar.
-
-### Entry Points
-
-Los entry points representan los puntos de entrada de la aplicación o el inicio de los flujos de negocio.
-
-## Application
-
-Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
-
-**Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
-
-Aquí tienes el README actualizado con los cuerpos JSON de las solicitudes que estaban en los `curl`:
-
----
+Para más información se puede leer la documentación del plugin en [Documentación de Scaffold Clean Architecture](https://bancolombia.github.io/scaffold-clean-architecture/docs/intro/)
 
 # Pokémon App Postman Collection
 
@@ -69,6 +21,7 @@ This folder contains the request to initiate a battle between two players.
     - **Method**: `POST`
     - **URL**: `{{mylocal}}/api/pokemon/battle/start/:name`
     - **Body**: N/A
+    - Basic Auth: add the username and password to authenticate the request.
 
 ### 2. Next Turn
 This folder contains requests for player actions during a battle, split into actions for Player 1 and Player 2.
@@ -79,6 +32,7 @@ This folder contains requests for player actions during a battle, split into act
   **Request**:
     - **Method**: `POST`
     - **URL**: `{{mylocal}}/api/pokemon/battle/next-turn`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**:
       ```json
       {
@@ -96,6 +50,7 @@ This folder contains requests for player actions during a battle, split into act
   **Request**:
     - **Method**: `POST`
     - **URL**: `{{mylocal}}/api/pokemon/battle/next-turn`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**:
       ```json
       {
@@ -113,6 +68,7 @@ This folder contains requests for player actions during a battle, split into act
   **Request**:
     - **Method**: `POST`
     - **URL**: `{{mylocal}}/api/pokemon/battle/next-turn`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**:
       ```json
       {
@@ -131,6 +87,7 @@ This folder contains requests for player actions during a battle, split into act
   **Request**:
     - **Method**: `POST`
     - **URL**: `{{mylocal}}/api/pokemon/battle/next-turn`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**:
       ```json
       {
@@ -154,6 +111,7 @@ This folder contains requests for player actions during a battle, split into act
   **Request**:
     - **Method**: `POST`
     - **URL**: `{{mylocal}}/api/pokemon/battle/next-turn`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**:
       ```json
       {
@@ -171,6 +129,7 @@ This folder contains requests for player actions during a battle, split into act
   **Request**:
     - **Method**: `POST`
     - **URL**: `{{mylocal}}/api/pokemon/battle/next-turn`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**:
       ```json
       {
@@ -188,6 +147,7 @@ This folder contains requests for player actions during a battle, split into act
   **Request**:
     - **Method**: `POST`
     - **URL**: `{{mylocal}}/api/pokemon/battle/next-turn`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**:
       ```json
       {
@@ -206,6 +166,7 @@ This folder contains requests for player actions during a battle, split into act
   **Request**:
     - **Method**: `POST`
     - **URL**: `{{mylocal}}/api/pokemon/battle/next-turn`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**:
       ```json
       {
@@ -231,6 +192,7 @@ This folder contains requests to retrieve information about each player involved
   **Request**:
     - **Method**: `GET`
     - **URL**: `{{mylocal}}/api/pokemon/battle/player/:name`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**: N/A
 
 - **Player 2**: Fetches details about Player 2.
@@ -238,6 +200,7 @@ This folder contains requests to retrieve information about each player involved
   **Request**:
     - **Method**: `GET`
     - **URL**: `{{mylocal}}/api/pokemon/battle/player/:name`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**: N/A
 
 ### 4. Battle Info
@@ -248,13 +211,26 @@ This folder contains a request to retrieve the current battle's overall informat
   **Request**:
     - **Method**: `GET`
     - **URL**: `{{mylocal}}/api/pokemon/battle`
+    - Basic Auth: add the username and password to authenticate the request.
+    - **Body**: N/A
+
+### 4. Report 
+This folder contains a request to retrieve the report for any battle, you must need the battleId given.
+
+- **Battle**: Fetches a report of the battle. 
+
+  **Request**:
+    - **Method**: `GET`
+    - **URL**: `{{mylocal}}/api/pokemon/battle/report/:battleId`
+    - Basic Auth: add the username and password to authenticate the request.
     - **Body**: N/A
 
 ## Variables
 
 ### Global Variables
 - **`mylocal`**: Represents the local server address where the Pokémon API is hosted. Replace this with your actual server address.
-
+ Could be localhost:8080 or https://pokemonapi-sark.onrender.com where is deployed.
+- 
 ## How to Use
 
 1. **Import the Collection**:
@@ -274,6 +250,9 @@ This folder contains a request to retrieve the current battle's overall informat
 
 6. **Fetch Battle Status**:
     - Get the current battle status at any time using the **Battle Info** request.
+
+7. **Check Report**:
+    - Check the report of the **Battle Info** request.
 
 ## Notes
 

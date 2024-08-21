@@ -10,7 +10,7 @@ COPY gradlew.bat ./gradlew.bat
 COPY gradle ./gradle
 COPY build.gradle ./build.gradle
 COPY settings.gradle ./settings.gradle
-COPY main.gradle ./main.gradle  
+COPY main.gradle ./main.gradle
 COPY . .
 
 # Hacer que el wrapper de Gradle sea ejecutable
@@ -34,8 +34,11 @@ COPY --from=builder /home/gradle/project/applications/app-service/build/libs/*.j
 # Establecer variables de entorno
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=70 -Djava.security.egd=file:/dev/./urandom"
 
+# Instalar utilidades necesarias para agregar usuario y grupo
+RUN apt-get update && apt-get install -y shadow && rm -rf /var/lib/apt/lists/*
+
 # Crear un usuario no-root y cambiar a él
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+RUN groupadd --system appgroup && useradd --system --ingroup appgroup appuser
 USER appuser
 
 # Ejecutar la aplicación

@@ -38,7 +38,7 @@ ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=70 -Djava.security.
 RUN apt-get update && apt-get install -y passwd && rm -rf /var/lib/apt/lists/*
 
 # Crear un usuario no-root y cambiar a él
-RUN groupadd --system appgroup && useradd --system --ingroup appgroup appuser
+RUN groupadd --system appgroup && useradd --system --gid appgroup appuser
 USER appuser
 
 # Ejecutar la aplicación

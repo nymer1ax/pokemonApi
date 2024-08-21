@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "9e893fad-6aca-4c5e-a3ba-e7b9729c77c6",
 		"name": "pokemonapp",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "5647351"
 	},
 	"item": [
@@ -12,8 +12,29 @@
 				{
 					"name": "start",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{mylocal}}/api/pokemon/battle/start/:name",
 							"host": [
@@ -50,6 +71,21 @@
 								{
 									"name": "Player 1 - Attack",
 									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "pass",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "user",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -61,7 +97,18 @@
 												}
 											}
 										},
-										"url": "{{mylocal}}/api/pokemon/battle/next-turn"
+										"url": {
+											"raw": "{{mylocal}}/api/pokemon/battle/next-turn",
+											"host": [
+												"{{mylocal}}"
+											],
+											"path": [
+												"api",
+												"pokemon",
+												"battle",
+												"next-turn"
+											]
+										}
 									},
 									"response": []
 								}
@@ -73,6 +120,21 @@
 								{
 									"name": "Player 1 -  Defend",
 									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "pass",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "user",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -84,7 +146,18 @@
 												}
 											}
 										},
-										"url": "{{mylocal}}/api/pokemon/battle/next-turn"
+										"url": {
+											"raw": "{{mylocal}}/api/pokemon/battle/next-turn",
+											"host": [
+												"{{mylocal}}"
+											],
+											"path": [
+												"api",
+												"pokemon",
+												"battle",
+												"next-turn"
+											]
+										}
 									},
 									"response": []
 								}
@@ -107,7 +180,18 @@
 												}
 											}
 										},
-										"url": "{{mylocal}}/api/pokemon/battle/next-turn"
+										"url": {
+											"raw": "{{mylocal}}/api/pokemon/battle/next-turn",
+											"host": [
+												"{{mylocal}}"
+											],
+											"path": [
+												"api",
+												"pokemon",
+												"battle",
+												"next-turn"
+											]
+										}
 									},
 									"response": []
 								}
@@ -119,6 +203,21 @@
 								{
 									"name": "Player 1 - Switch pokemon",
 									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "pass",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "user",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -130,7 +229,18 @@
 												}
 											}
 										},
-										"url": "{{mylocal}}/api/pokemon/battle/next-turn"
+										"url": {
+											"raw": "{{mylocal}}/api/pokemon/battle/next-turn",
+											"host": [
+												"{{mylocal}}"
+											],
+											"path": [
+												"api",
+												"pokemon",
+												"battle",
+												"next-turn"
+											]
+										}
 									},
 									"response": []
 								}
@@ -147,6 +257,21 @@
 								{
 									"name": "Player 2 - Attack",
 									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "pass",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "user",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -158,7 +283,18 @@
 												}
 											}
 										},
-										"url": "{{mylocal}}/api/pokemon/battle/next-turn"
+										"url": {
+											"raw": "{{mylocal}}/api/pokemon/battle/next-turn",
+											"host": [
+												"{{mylocal}}"
+											],
+											"path": [
+												"api",
+												"pokemon",
+												"battle",
+												"next-turn"
+											]
+										}
 									},
 									"response": []
 								}
@@ -170,6 +306,21 @@
 								{
 									"name": "Player 2 -  Defend",
 									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "pass",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "user",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -181,7 +332,18 @@
 												}
 											}
 										},
-										"url": "{{mylocal}}/api/pokemon/battle/next-turn"
+										"url": {
+											"raw": "{{mylocal}}/api/pokemon/battle/next-turn",
+											"host": [
+												"{{mylocal}}"
+											],
+											"path": [
+												"api",
+												"pokemon",
+												"battle",
+												"next-turn"
+											]
+										}
 									},
 									"response": []
 								}
@@ -193,6 +355,21 @@
 								{
 									"name": "Player 2 - Use Item",
 									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "pass",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "user",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -204,7 +381,18 @@
 												}
 											}
 										},
-										"url": "{{mylocal}}/api/pokemon/battle/next-turn"
+										"url": {
+											"raw": "{{mylocal}}/api/pokemon/battle/next-turn",
+											"host": [
+												"{{mylocal}}"
+											],
+											"path": [
+												"api",
+												"pokemon",
+												"battle",
+												"next-turn"
+											]
+										}
 									},
 									"response": []
 								}
@@ -216,6 +404,21 @@
 								{
 									"name": "Player 2 - Switch pokemon",
 									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "pass",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "user",
+													"type": "string"
+												}
+											]
+										},
 										"method": "POST",
 										"header": [],
 										"body": {
@@ -227,7 +430,18 @@
 												}
 											}
 										},
-										"url": "{{mylocal}}/api/pokemon/battle/next-turn"
+										"url": {
+											"raw": "{{mylocal}}/api/pokemon/battle/next-turn",
+											"host": [
+												"{{mylocal}}"
+											],
+											"path": [
+												"api",
+												"pokemon",
+												"battle",
+												"next-turn"
+											]
+										}
 									},
 									"response": []
 								}
@@ -243,6 +457,21 @@
 				{
 					"name": "Player 1",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -270,6 +499,21 @@
 				{
 					"name": "Player 2",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -302,9 +546,81 @@
 				{
 					"name": "Battle",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
-						"url": "{{mylocal}}/api/pokemon/battle"
+						"url": {
+							"raw": "{{mylocal}}/api/pokemon/battle",
+							"host": [
+								"{{mylocal}}"
+							],
+							"path": [
+								"api",
+								"pokemon",
+								"battle"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "report",
+			"item": [
+				{
+					"name": "Report",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{mylocal}}/api/pokemon/battle/report/:battleid",
+							"host": [
+								"{{mylocal}}"
+							],
+							"path": [
+								"api",
+								"pokemon",
+								"battle",
+								"report",
+								":battleid"
+							],
+							"variable": [
+								{
+									"key": "battleid",
+									"value": "76ec4021-ae2d-4c89-b0de-3f8d4456e8b1"
+								}
+							]
+						}
 					},
 					"response": []
 				}

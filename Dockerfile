@@ -35,7 +35,7 @@ COPY --from=builder /home/gradle/project/applications/app-service/build/libs/*.j
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=70 -Djava.security.egd=file:/dev/./urandom"
 
 # Instalar utilidades necesarias para agregar usuario y grupo
-RUN apt-get update && apt-get install -y shadow && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y passwd && rm -rf /var/lib/apt/lists/*
 
 # Crear un usuario no-root y cambiar a él
 RUN groupadd --system appgroup && useradd --system --ingroup appgroup appuser

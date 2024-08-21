@@ -1,6 +1,7 @@
 package co.com.pokemon.usecase.battle;
 
 import co.com.pokemon.model.battle.Battle;
+import co.com.pokemon.model.battle.report.BattleReport;
 import co.com.pokemon.model.battle.status.BattleStatus;
 import co.com.pokemon.model.logger.LoggerGateway;
 import co.com.pokemon.model.player.Player;
@@ -11,6 +12,8 @@ import co.com.pokemon.usecase.battle.prepare.PrepareBattleUseCase;
 import co.com.pokemon.usecase.exceptions.IncorrectUserException;
 import co.com.pokemon.usecase.exceptions.NotYourTurnException;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class BattleLauncherUseCase {
@@ -88,6 +91,8 @@ public class BattleLauncherUseCase {
     public Battle getActiveBattle() {
         return battleManager.getCurrentBattle();
     }
+
+
 
 
 }

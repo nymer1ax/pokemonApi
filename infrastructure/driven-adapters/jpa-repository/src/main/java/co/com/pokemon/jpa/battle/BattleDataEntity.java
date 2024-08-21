@@ -1,9 +1,9 @@
 package co.com.pokemon.jpa.battle;
+
 import jakarta.persistence.*;
 import lombok.*;
+import java.sql.Timestamp;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 @Entity
@@ -28,10 +28,10 @@ public class BattleDataEntity {
     private String player2Id;
 
     @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    private Timestamp startTime;
 
     @Column(name = "end_time")
-    private LocalDateTime endTime;
+    private Timestamp endTime;
 
     @Column(name = "winner")
     private String winner;

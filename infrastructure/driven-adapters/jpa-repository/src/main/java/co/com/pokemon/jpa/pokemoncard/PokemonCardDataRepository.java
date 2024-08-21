@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface PokemonCardDataRepository extends CrudRepository<PokemonCardDataEntity, Long>, QueryByExampleExecutor<PokemonCardDataEntity> {
     Optional<PokemonCardDataEntity> findByName(String name);
+
+    Boolean existsByCardId(String cardId);
 }

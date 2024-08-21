@@ -16,18 +16,16 @@ import java.util.List;
 public class CorsConfig {
 
     @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilter(@Value("${cors.allowed-origins}") String origins) {
+    public CorsFilter corsFilter(@Value("${cors.allowed-origins}") String origins) {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of(origins.split(",")));
-        config.setAllowedMethods(Arrays.asList("POST", "GET")); // TODO: Check others required methods
+        config.setAllowedOrigins(List.of(origins.split(","))); // Assuming comma-separated origins
+        config.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE")); // Check other required methods
         config.setAllowedHeaders(List.of(CorsConfiguration.ALL));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
-        final FilterRegistrationBean<CorsFilter> corsFilter = new FilterRegistrationBean<>(new CorsFilter(source));
-        corsFilter.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return corsFilter;
+        return new CorsFilter(source);
     }
 }

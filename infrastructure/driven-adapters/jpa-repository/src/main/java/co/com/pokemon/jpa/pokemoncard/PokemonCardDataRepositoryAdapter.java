@@ -19,11 +19,17 @@ public class PokemonCardDataRepositoryAdapter implements PokemonCardRepository {
     private final BattleDataRepository battleDataRepository;
     private final PlayerCardDataRepository playerCardDataRepository;
     private final PokemonCardDataRepository pokemonCardDataRepository;
-
     @Override
     public void saveAll(String playerId, List<PokemonCard> pokemonCardList, String battleId) {
-        List<PokemonCardDataEntity> cards = PokemonCardMapper.mapToPokemonCardEntities(pokemonCardList);
-        Iterable<PokemonCardDataEntity> savedCards = pokemonCardDataRepository.saveAll(cards);
+        List<PokemonCardDataEntity> validPokemonCards = pokemonCardList.stream()
+                .filter(card -> !pokemonCardDataRepository.existsByCardId(card.getId()))
+                .map(PokemonCardMapper::toPokemonCardDataEntity)
+                .collect(Collectors.toList());
+        if (validPokemonCards.isEmpty()) {
+            return;
+        }
+
+        Iterable<PokemonCardDataEntity> savedCards = pokemonCardDataRepository.saveAll(validPokemonCards);
         savePlayerCard(savedCards, playerId, battleId);
     }
 
@@ -33,5 +39,6 @@ public class PokemonCardDataRepositoryAdapter implements PokemonCardRepository {
                 .collect(Collectors.toList());
         playerCardDataRepository.saveAll(playerCardEntities);
     }
-
 }
+
+

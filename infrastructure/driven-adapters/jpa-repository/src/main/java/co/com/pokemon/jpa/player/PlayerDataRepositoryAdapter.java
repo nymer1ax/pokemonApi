@@ -18,9 +18,12 @@ public class PlayerDataRepositoryAdapter implements PlayerRepository {
 
     @Override
     public Player savePlayer(Player player) {
-        playerDataRepository.save(PlayerMapper.toEntity.apply(player));
+        if (playerDataRepository.findByName(player.getName()).isEmpty()) {
+            playerDataRepository.save(PlayerMapper.toEntity.apply(player));
+        }
         return player;
     }
+
 
     @Override
     public Optional<Player> findPlayerByName(String name) {

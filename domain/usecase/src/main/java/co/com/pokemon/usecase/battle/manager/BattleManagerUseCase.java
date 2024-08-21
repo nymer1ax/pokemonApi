@@ -6,41 +6,64 @@ import co.com.pokemon.usecase.battle.prepare.PrepareBattleUseCase;
 import co.com.pokemon.usecase.exceptions.BattleInProgressException;
 import co.com.pokemon.usecase.exceptions.BattleNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class BattleManagerUseCase {
     public static final int NUMBER_OF_CARDS = 3;
-    private Battle currentBattle;
     private final PrepareBattleUseCase prepareBattleUseCase;
+    private final BattleHolder battleHolder = new BattleHolder();
 
     public Battle createBattle(Player player1, Player player2) {
-        if (currentBattle != null && !currentBattle.isFinished()) {
-            throw new BattleInProgressException("Ya hay una batalla en curso.");
-        }
-        currentBattle = new Battle(player1, player2);
-        prepareBattleUseCase.execute(currentBattle, player1, player2, NUMBER_OF_CARDS);
-        currentBattle = new Battle(player1, player2);
-        return currentBattle;
+        battleHolder.getBattle().ifPresent(battle -> {
+            if (!battle.isFinished()) {
+                throw new BattleInProgressException("Ya hay una batalla en curso.");
+            }
+        });
+
+        Battle battle = new Battle(player1, player2);
+        prepareBattleUseCase.execute(battle, player1, player2, NUMBER_OF_CARDS);
+        battleHolder.setBattle(battle);
+        return battle;
     }
 
     public Battle getCurrentBattle() {
-        if (currentBattle == null) {
-            throw new BattleNotFoundException("No hay ninguna batalla en curso.");
-        }
-        return currentBattle;
+        return battleHolder.getBattle()
+                .orElseThrow(() -> new BattleNotFoundException("No hay ninguna batalla en curso."));
     }
 
     public Battle finishBattle() {
-        if (currentBattle != null) {
-            currentBattle.setFinished(true);
+        Battle battle = battleHolder.getBattle().orElse(null);
+        if (battle != null) {
+            battle.setFinished(true);
         }
-        return currentBattle;
+        return battle;
     }
 
     public void endBattle() {
-        currentBattle = null;
+        battleHolder.clear();
     }
 
     public boolean isBattleInProgress() {
-        return currentBattle != null && !currentBattle.isFinished();
+        return battleHolder.getBattle().map(battle -> !battle.isFinished()).orElse(false);
+    }
+
+    // Inner static class to hold the current battle
+    public static class BattleHolder {
+        private Battle battle;
+
+        public Optional<Battle> getBattle() {
+            return Optional.ofNullable(battle);
+        }
+
+        public void setBattle(Battle battle) {
+            this.battle = battle;
+        }
+
+        public void clear() {
+            this.battle = null;
+        }
     }
 }
+

@@ -82,5 +82,12 @@ resilience4j:
         max-attempts: 3
         wait-duration: 500ms
 
+
+
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
+
+users:
+  auth:
+    username: "${USERNAME}"
+    password: "${PASSWORD}"
